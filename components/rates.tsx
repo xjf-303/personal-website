@@ -46,7 +46,9 @@ function Rates() {
                 {rate.summary}
               </p>
 
-              <ul className="mt-7 space-y-3 border-t border-border pt-6 text-sm leading-relaxed">
+              {/* flex-1 lets the shorter lists absorb the slack, so the three
+                  "Enquire" links land on one baseline instead of three. */}
+              <ul className="mt-7 flex-1 space-y-3 border-t border-border pt-6 text-sm leading-relaxed">
                 {rate.includes.map((item) => (
                   <li key={item} className="flex gap-3">
                     <span

@@ -108,7 +108,9 @@ function Lightbox({
       }}
     >
       <Dialog.Portal>
-        <Dialog.Backdrop className="fixed inset-0 z-50 bg-background/95 transition-opacity duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-sm" />
+        {/* Opaque, not translucent: at 95% the sticky header's nav still read
+            through and collided with the title and counter below. */}
+        <Dialog.Backdrop className="fixed inset-0 z-50 bg-background transition-opacity duration-200 data-ending-style:opacity-0 data-starting-style:opacity-0" />
         <Dialog.Popup className="fixed inset-0 z-50 flex flex-col transition-opacity duration-200 outline-none data-ending-style:opacity-0 data-starting-style:opacity-0">
           <div className="flex h-16 shrink-0 items-center justify-between gap-4 px-5 sm:px-8">
             <Dialog.Title className="eyebrow min-w-0 truncate text-muted-foreground">
@@ -177,18 +179,21 @@ function Lightbox({
             </div>
           </div>
 
-          <div className="flex min-h-0 flex-1 items-center justify-center px-5 pb-8 sm:px-8">
-            {photo ? (
-              <Image
-                key={photo.src}
-                src={photo.src}
-                alt={photo.alt}
-                width={photo.width}
-                height={photo.height}
-                sizes="100vw"
-                className="max-h-full w-auto object-contain"
-              />
-            ) : null}
+          {/* The outer box holds the gutters; the inner one is the positioning
+              context, so `fill` fits the photograph to exactly that area. */}
+          <div className="min-h-0 flex-1 px-5 pb-8 sm:px-8">
+            <div className="relative size-full">
+              {photo ? (
+                <Image
+                  key={photo.src}
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="100vw"
+                  className="object-contain"
+                />
+              ) : null}
+            </div>
           </div>
         </Dialog.Popup>
       </Dialog.Portal>
